@@ -2,19 +2,21 @@
   "version": 3,
   "sources": [
     "node_modules/browserify/node_modules/browser-pack/_prelude.js",
-    "/Users/eduardonunesp/Developer/NKO5/all-your-javascripts/game/index.js",
-    "/Users/eduardonunesp/Developer/NKO5/all-your-javascripts/game/states/GameState.js",
-    "/Users/eduardonunesp/Developer/NKO5/all-your-javascripts/game/states/MenuState.js",
-    "/Users/eduardonunesp/Developer/NKO5/all-your-javascripts/game/states/index.js"
+    "/Users/eduardonunesp/Developer/NKO5/nko-game/game/index.js",
+    "/Users/eduardonunesp/Developer/NKO5/nko-game/game/objects/Enemy.js",
+    "/Users/eduardonunesp/Developer/NKO5/nko-game/game/states/GameState.js",
+    "/Users/eduardonunesp/Developer/NKO5/nko-game/game/states/MenuState.js",
+    "/Users/eduardonunesp/Developer/NKO5/nko-game/game/states/index.js"
   ],
   "names": [],
-  "mappings": "AAAA;;;;;;;;;sBCGO,UAAU;;IAEX,IAAI;WAAJ,IAAI;;AAEE,UAFN,IAAI,GAEK;wBAFT,IAAI;;AAGR,6BAHI,IAAI,6CAGF,GAAG,EAAE,GAAG,EAAE,MAAM,CAAC,IAAI,EAAE,SAAS,EAAE,IAAI,EAAE;AAC9C,MAAI,CAAC,KAAK,CAAC,GAAG,CAAC,WAAW,qBAAa,KAAK,CAAC,CAAC;AAC5C,MAAI,CAAC,KAAK,CAAC,GAAG,CAAC,WAAW,qBAAa,KAAK,CAAC,CAAC;AAChD,MAAI,CAAC,KAAK,CAAC,KAAK,CAAC,WAAW,CAAC,CAAC;EAC9B;;QAPI,IAAI;GAAS,MAAM,CAAC,IAAI;;AAW9B,IAAM,IAAI,GAAG,IAAI,IAAI,EAAE,CAAC;;;AChBxB,YAAY,CAAC;;;;;;;;;;;;;;IAEA,SAAS;WAAT,SAAS;;UAAT,SAAS;wBAAT,SAAS;;6BAAT,SAAS;;;cAAT,SAAS;;SAEf,kBAAG;AACN,OAAI,CAAC,KAAK,CAAC,KAAK,CAAC,WAAW,CAAC,CAAC;GAChC;;;QAJW,SAAS;GAAS,MAAM,CAAC,KAAK;;;;;ACF3C,YAAY,CAAC;;;;;;;;;;;;;;IAEA,SAAS;YAAT,SAAS;;WAAT,SAAS;0BAAT,SAAS;;+BAAT,SAAS;;;eAAT,SAAS;;WAEd,kBAAG;AACP,aAAO,CAAC,GAAG,CAAC,MAAM,CAAC,CAAC;KACrB;;;SAJU,SAAS;GAAS,MAAM,CAAC,KAAK;;;;;;;;;;;;;;;yBCF7B,aAAa;;;;yBACb,aAAa",
+  "mappings": "AAAA;;;;;;;;;sBCGO,UAAU;;IAEX,IAAI;WAAJ,IAAI;;AAEE,UAFN,IAAI,GAEK;wBAFT,IAAI;;AAGR,6BAHI,IAAI,6CAGF,GAAG,EAAE,GAAG,EAAE,MAAM,CAAC,IAAI,EAAE,SAAS,EAAE,IAAI,EAAE;AAC9C,MAAI,CAAC,KAAK,CAAC,GAAG,CAAC,WAAW,qBAAa,KAAK,CAAC,CAAC;AAC5C,MAAI,CAAC,KAAK,CAAC,GAAG,CAAC,WAAW,qBAAa,KAAK,CAAC,CAAC;AAChD,MAAI,CAAC,KAAK,CAAC,KAAK,CAAC,WAAW,CAAC,CAAC;EAC9B;;QAPI,IAAI;GAAS,MAAM,CAAC,IAAI;;AAW9B,IAAM,IAAI,GAAG,IAAI,IAAI,EAAE,CAAC;;;AChBxB,YAAY,CAAC;;;;;;;;;;;;IAEP,KAAK;YAAL,KAAK;;AACE,WADP,KAAK,CACG,IAAI,EAAE,CAAC,EAAE,CAAC,EAAE;0BADpB,KAAK;;AAEP,+BAFE,KAAK,6CAED,IAAI,EAAE,CAAC,EAAE,CAAC,EAAE;AAClB,QAAI,CAAC,IAAI,GAAG,CAAC,CAAC;AACd,QAAI,CAAC,OAAO,GAAG,KAAK,CAAC;GACtB;;SALG,KAAK;GAAS,MAAM,CAAC,MAAM;;qBAQlB,KAAK;;;;ACVpB,YAAY,CAAC;;;;;;;;;;;;;;;;4BAEK,kBAAkB;;;;IAEvB,SAAS;YAAT,SAAS;;WAAT,SAAS;0BAAT,SAAS;;+BAAT,SAAS;;;eAAT,SAAS;;WACf,kBAAG;AACN,UAAM,KAAK,GAAG,8BAAU,IAAI,CAAC,IAAI,CAAC,CAAC;AACnC,UAAI,CAAC,IAAI,CAAC,KAAK,CAAC,QAAQ,CAAC,KAAK,CAAC,CAAC;AAChC,aAAO,CAAC,GAAG,CAAC,QAAQ,CAAC,CAAC;KACxB;;;WAEO,mBAAG;AACR,aAAO,CAAC,GAAG,CAAC,SAAS,CAAC,CAAC;KACxB;;;SATU,SAAS;GAAS,MAAM,CAAC,KAAK;;;;;ACJ3C,YAAY,CAAC;;;;;;;;;;;;;;IAEA,SAAS;YAAT,SAAS;;WAAT,SAAS;0BAAT,SAAS;;+BAAT,SAAS;;;eAAT,SAAS;;WAEd,kBAAG;AACP,aAAO,CAAC,GAAG,CAAC,MAAM,CAAC,CAAC;KACrB;;;SAJU,SAAS;GAAS,MAAM,CAAC,KAAK;;;;;;;;;;;;;;;yBCF7B,aAAa;;;;yBACb,aAAa",
   "file": "generated.js",
   "sourceRoot": "",
   "sourcesContent": [
     "(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require==\"function\"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error(\"Cannot find module '\"+o+\"'\");throw f.code=\"MODULE_NOT_FOUND\",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require==\"function\"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})",
     "import {\n  GameState,\n  MenuState\n} from './states';\n\nclass Game extends Phaser.Game {\n\n\tconstructor() {\n\t\tsuper(800, 600, Phaser.AUTO, 'content', null);\n\t\tthis.state.add('GameState', GameState, false);\n    this.state.add('MenuState', MenuState, false);\n\t\tthis.state.start('GameState');\n\t}\n\n}\n\nconst game = new Game();",
-    "'use strict';\n\nexport class GameState extends Phaser.State {\n\n\tcreate() {\n    this.state.start('MenuState');\n\t}\n}",
+    "'use strict';\n\nclass Enemy extends Phaser.Sprite {\n  constructor(game, x, y) {\n    super(game, x, y);\n    this.life = 0;\n    this.isAlive = false;\n  }\n}\n\nexport default Enemy;",
+    "'use strict';\n\nimport Enemy from \"../objects/Enemy\";\n\nexport class GameState extends Phaser.State {\n\tcreate() {\n    const enemy = new Enemy(this.game);\n    this.game.stage.addChild(enemy);\n    console.log('create');\n\t}\n\n  preload() {\n    console.log('preload');\n  }\n}",
     "'use strict';\n\nexport class MenuState extends Phaser.State {\n\n  create() {\n    console.log('Menu');\n  }\n}",
     "export * from './MenuState';\nexport * from './GameState';"
   ]
