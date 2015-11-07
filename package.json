@@ -8,8 +8,12 @@
     "express": "3.x.x"
   },
   "scripts": {
-    "start": "node app.js",
+    "preinstall": "npm i -g babel",
+    "start": "babel-node app.js",
     "postinstall": "node scripts/postinstall.js"
+  },
+  "devDependencies": {
+    "babel": "^6.0.15",
+    "babel-preset-node5": "^6.1.3"
   }
-
 }
