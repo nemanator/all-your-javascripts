@@ -10,6 +10,7 @@ GameState.prototype.preload = function() {
   this.game.load.tilemap('map', 'static/map1.json', null, Phaser.Tilemap.TILED_JSON);
   this.game.load.image('tiles', 'static/tiles.png');
   this.game.load.spritesheet('hero', 'static/hero.png', 34, 38, 14);
+  this.game.load.spritesheet('enemy1', 'static/enemy1.png', 33, 42, 4);
   this.game.load.image('background', 'static/map1.png');
   this.game.load.image('bullet1', 'static/bullet1.png');
 
@@ -99,7 +100,15 @@ GameState.prototype.create = function () {
   this.add.game.add.existing(this.player);
   this.game.camera.follow(this.player);
 
+  this.enemies = this.game.add.group();
+
+  var enemy = new Enemy(this, 100, 4, 'enemy1');
+  this.game.add.existing(enemy);
+
+  this.enemies.add(enemy);
+
   var music = this.game.add.audio('music');
+  music.loop = true;
   music.play();
 
 };

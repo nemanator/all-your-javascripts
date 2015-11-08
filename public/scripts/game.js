@@ -85,6 +85,63 @@ SingleBullet.prototype.fire = function (source) {
     this.nextFire = this.game.time.time + this.fireRate;
 
 };
+function Enemy(game_state, x, y, image) {
+  Phaser.Sprite.call(this, game_state.game, x, y, image);
+  this.game_state = game_state;
+
+  this.facing = 'left';
+  this.name = 'Enemy';
+  this.currState = 'ALERT';
+
+  console.log('Add enemy');
+
+  this.animations.add('idle', [1], 0);
+  this.animations.add('walk', [0, 1], 6, true);
+  this.animations.add('treat', [0,2,3], 2, true);
+  this.animations.play('idle');
+
+  this.game_state.game.physics.arcade.enable(this);
+  this.body.collideWorldBounds = true;
+  this.anchor.setTo(0.5, 0.5);
+
+  this.fx = this.game.add.audioSprite('sfx');
+  this.fx.allowMultiple = true;
+}
+
+Enemy.prototype = Object.create(Phaser.Sprite.prototype);
+Enemy.prototype.constructor = Enemy;
+
+Enemy.prototype.spawn = function() {
+  this.reset(this.respawnPoint.x, this.respawnPoint.y);
+};
+
+Enemy.prototype.changeState = function(newState) {
+  if (newState === this.currState) {
+    return;
+  }
+
+  this.currState = newState;
+  console.log('Change state', newState);
+
+  switch(newState) {
+    case 'IDLE':
+      this.animations.play('idle');
+      break;
+    case 'TREAT':
+      this.animations.play('treat');
+      break;
+  }
+};
+
+Enemy.prototype.update = function() {
+  if (this.game_state.layerSolid) {
+    this.game_state.game.physics.arcade.collide(this, this.game_state.layerSolid);
+    this.game_state.game.physics.arcade.collide(this, this.game_state.layerHazard, function(enemy) {
+      enemy.fx.play('death');
+      enemy.kill();
+    });
+  }
+};
 function Player(game_state, x, y) {
   Phaser.Sprite.call(this, game_state.game, x, y, 'hero');
   this.game_state = game_state;
@@ -115,16 +172,14 @@ function Player(game_state, x, y) {
   this.fx = this.game.add.audioSprite('sfx');
   this.fx.allowMultiple = true;
 
+  this.bullet = new SingleBullet(this.game_state.game);
+  this.bullet.setAll('body.allowGravity', false);
 
   var key = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
   key.onDown.add(function(key)
   {
-    var bullet = new SingleBullet(this.game_state.game);
-    bullet.setAll('body.allowGravity', false);
-
     this.fx.play('shot');
-
-    bullet.fire(this);
+    this.bullet.fire(this);
   }, this);
 }
 
@@ -167,6 +222,12 @@ Player.prototype.update = function() {
     });
   }
 
+  this.game_state.game.physics.arcade.collide(this.bullet, this.game_state.enemies, function(b, enemy) {
+    b.kill();
+    this.fx.play('squit');
+    enemy.kill();
+  }, null, this);
+
   if (this.cursors.left.isDown) {
       this.scale.x = 1;
       this.body.velocity.x = -200;
@@ -205,6 +266,7 @@ GameState.prototype.preload = function() {
   this.game.load.tilemap('map', 'static/map1.json', null, Phaser.Tilemap.TILED_JSON);
   this.game.load.image('tiles', 'static/tiles.png');
   this.game.load.spritesheet('hero', 'static/hero.png', 34, 38, 14);
+  this.game.load.spritesheet('enemy1', 'static/enemy1.png', 33, 42, 4);
   this.game.load.image('background', 'static/map1.png');
   this.game.load.image('bullet1', 'static/bullet1.png');
 
@@ -294,7 +356,15 @@ GameState.prototype.create = function () {
   this.add.game.add.existing(this.player);
   this.game.camera.follow(this.player);
 
+  this.enemies = this.game.add.group();
+
+  var enemy = new Enemy(this, 100, 4, 'enemy1');
+  this.game.add.existing(enemy);
+
+  this.enemies.add(enemy);
+
   var music = this.game.add.audio('music');
+  music.loop = true;
   music.play();
 
 };

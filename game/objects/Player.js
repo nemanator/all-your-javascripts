@@ -28,16 +28,14 @@ function Player(game_state, x, y) {
   this.fx = this.game.add.audioSprite('sfx');
   this.fx.allowMultiple = true;
 
+  this.bullet = new SingleBullet(this.game_state.game);
+  this.bullet.setAll('body.allowGravity', false);
 
   var key = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
   key.onDown.add(function(key)
   {
-    var bullet = new SingleBullet(this.game_state.game);
-    bullet.setAll('body.allowGravity', false);
-
     this.fx.play('shot');
-
-    bullet.fire(this);
+    this.bullet.fire(this);
   }, this);
 }
 
@@ -79,6 +77,12 @@ Player.prototype.update = function() {
       player.spawn();
     });
   }
+
+  this.game_state.game.physics.arcade.collide(this.bullet, this.game_state.enemies, function(b, enemy) {
+    b.kill();
+    this.fx.play('squit');
+    enemy.kill();
+  }, null, this);
 
   if (this.cursors.left.isDown) {
       this.scale.x = 1;
