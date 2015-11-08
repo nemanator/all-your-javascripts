@@ -48,7 +48,7 @@ Player.prototype.changeState = function(newState) {
 };
 
 Player.prototype.update = function() {
-  this.game_state.game.physics.arcade.collide(this, this.game_state.layer1);
+  this.game_state.game.physics.arcade.collide(this, this.game_state.layerSolid);
 
   if (this.cursors.left.isDown) {
       this.scale.x = 1;

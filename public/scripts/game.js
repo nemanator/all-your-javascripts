@@ -48,7 +48,7 @@ Player.prototype.changeState = function(newState) {
 };
 
 Player.prototype.update = function() {
-  this.game_state.game.physics.arcade.collide(this, this.game_state.layer1);
+  this.game_state.game.physics.arcade.collide(this, this.game_state.layerSolid);
 
   if (this.cursors.left.isDown) {
       this.scale.x = 1;
@@ -88,6 +88,7 @@ GameState.prototype.preload = function() {
   this.game.load.tilemap('map', 'static/map1.json', null, Phaser.Tilemap.TILED_JSON);
   this.game.load.image('tiles', 'static/tiles.png');
   this.game.load.spritesheet('hero', 'static/hero.png', 34, 38, 14);
+  this.game.load.image('background', 'static/map1.png');
 };
 
 GameState.prototype.create = function () {
@@ -103,14 +104,18 @@ GameState.prototype.create = function () {
   var map = this.game.add.tilemap('map');
   map.addTilesetImage('tiles1', 'tiles');
 
-  this.layer1 = map.createLayer('layer2');
-  this.layer1.debug = true;
-  this.layer1.resizeWorld();
+  this.game.add.sprite(0, 0, 'background');
 
-  this.layer2 = map.createLayer('layer1');
-  this.layer2.resizeWorld();
+  this.layerSolid = map.createLayer('solid');
+  //this.layerSolid.debug = true;
+  this.layerSolid.resizeWorld();
 
-  map.setCollision([129, 130], true, "layer1", true);
+  this.layerHazard = map.createLayer('hazard');
+  //this.layerHazard.debug = true;
+  this.layerHazard.resizeWorld();
+
+  map.setCollisionBetween(1, 640, true, 'solid', true);
+  //map.setCollisionBetween(1, 640, true, 'hazard', true);
 
   this.player = new Player(this, 40, 4);
   this.add.game.add.existing(this.player);
@@ -126,7 +131,7 @@ GameState.prototype.render = function() {
   //this.game.debug.bodyInfo(this.player, 16, 24);
 };
 (function() {
-  var game = new Phaser.Game(800, 600, Phaser.AUTO, 'content');
+  var game = new Phaser.Game(800, 600, Phaser.WEBGL, 'content');
   game.state.add('GameState', new GameState());
   game.state.start('GameState');
 })();
