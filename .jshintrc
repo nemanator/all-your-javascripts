@@ -36,5 +36,5 @@
     "trailing"      : true,
     "white"         : false,
     "indent"        : 4,
-    "predef"        : [ "Phaser" ]
+    "predef"        : [ "Phaser", "GameState", "Player"]
 }

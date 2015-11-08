@@ -13,6 +13,9 @@
     "compression": "^1.6.0",
     "express": "3.x.x",
     "github-scraper": "^3.0.22",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-connect": "^2.2.0",
     "passport": "^0.3.0",
     "passport-github2": "^0.1.9"
   },
