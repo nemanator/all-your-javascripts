@@ -1,30 +1,133 @@
+var Bullet = function (game, key) {
+
+  Phaser.Sprite.call(this, game, 0, 0, key);
+
+  this.texture.baseTexture.scaleMode = PIXI.scaleModes.NEAREST;
+
+  this.anchor.set(0.5);
+
+  this.checkWorldBounds = true;
+  this.outOfBoundsKill = true;
+  this.exists = false;
+
+  this.tracking = false;
+  this.scaleSpeed = 0;
+
+};
+
+Bullet.prototype = Object.create(Phaser.Sprite.prototype);
+Bullet.prototype.constructor = Bullet;
+
+Bullet.prototype.fire = function (x, y, angle, speed, gx, gy) {
+
+  gx = gx || 0;
+  gy = gy || 0;
+
+  this.reset(x, y);
+  this.scale.set(1);
+
+  this.game.physics.arcade.velocityFromAngle(angle, speed, this.body.velocity);
+
+  this.angle = angle;
+
+  this.body.gravity.set(gx, gy);
+
+};
+
+Bullet.prototype.update = function () {
+
+  if (this.tracking)
+  {
+    this.rotation = Math.atan2(this.body.velocity.y, this.body.velocity.x);
+  }
+
+  if (this.scaleSpeed > 0)
+  {
+    this.scale.x += this.scaleSpeed;
+    this.scale.y += this.scaleSpeed;
+  }
+
+};
+
+////////////////////////////////////////////////////
+//  A single bullet is fired in front of the ship //
+////////////////////////////////////////////////////
+
+SingleBullet = function (game) {
+
+    Phaser.Group.call(this, game, game.world, 'Single Bullet', false, true, Phaser.Physics.ARCADE);
+
+    this.nextFire = 0;
+    this.bulletSpeed = 600;
+    this.fireRate = 100;
+
+    for (var i = 0; i < 64; i++)
+    {
+        this.add(new Bullet(game, 'bullet1'), true);
+    }
+
+    return this;
+
+};
+
+SingleBullet.prototype = Object.create(Phaser.Group.prototype);
+SingleBullet.prototype.constructor = SingleBullet;
+
+SingleBullet.prototype.fire = function (source) {
+
+    if (this.game.time.time < this.nextFire) { return; }
+
+    var x = source.x + 10;
+    var y = source.y + 10;
+
+    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
+
+    this.nextFire = this.game.time.time + this.fireRate;
+
+};
 function Player(game_state, x, y) {
-    Phaser.Sprite.call(this, game_state.game, x, y, 'hero');
-    this.game_state = game_state;
+  Phaser.Sprite.call(this, game_state.game, x, y, 'hero');
+  this.game_state = game_state;
 
-    this.facing = 'left';
-    this.life = 0;
-    this.isAlive = false;
-    this.name = 'Player';
-    this.currState = 'IDLE';
+  this.facing = 'left';
+  this.lifes = 3;
+  this.isAlive = false;
+  this.name = 'Player';
+  this.currState = 'IDLE';
+  this.respawnPoint = {
+    x: 40, y: 4
+  };
 
-    console.log('Add player');
+  console.log('Add player');
 
-    this.animations.add('idle', [1], 0);
-    this.animations.add('walk', [0, 1], 6, true);
-    this.animations.add('jump', [7], 0);
-    this.animations.play('idle');
+  this.animations.add('idle', [1], 0);
+  this.animations.add('walk', [0, 1], 6, true);
+  this.animations.add('jump', [7], 0);
+  this.animations.play('idle');
 
-    this.game_state.game.physics.arcade.enable(this);
-    this.body.collideWorldBounds = true;
-    this.anchor.setTo(0.5, 0.5);
+  this.game_state.game.physics.arcade.enable(this);
+  this.body.collideWorldBounds = true;
+  this.anchor.setTo(0.5, 0.5);
 
-    this.cursors = this.game_state.game.input.keyboard.createCursorKeys();
-    this.jumpButton = this.game_state.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  this.cursors = this.game_state.game.input.keyboard.createCursorKeys();
+  this.jumpButton = this.game_state.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+  var key = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
+  key.onDown.add(function(key)
+  {
+    var bullet = new SingleBullet(this.game_state.game);
+    console.log(bullet);
+
+    //bullet.fire(this);
+  }, this);
 }
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
+
+Player.prototype.spawn = function() {
+  this.reset(this.respawnPoint.x, this.respawnPoint.y);
+};
 
 Player.prototype.changeState = function(newState) {
   if (newState === this.currState) {
@@ -48,7 +151,13 @@ Player.prototype.changeState = function(newState) {
 };
 
 Player.prototype.update = function() {
-  this.game_state.game.physics.arcade.collide(this, this.game_state.layerSolid);
+  if (this.game_state.layerSolid) {
+    this.game_state.game.physics.arcade.collide(this, this.game_state.layerSolid);
+    this.game_state.game.physics.arcade.collide(this, this.game_state.layerHazard, function(player) {
+      player.kill();
+      player.spawn();
+    });
+  }
 
   if (this.cursors.left.isDown) {
       this.scale.x = 1;
@@ -89,6 +198,7 @@ GameState.prototype.preload = function() {
   this.game.load.image('tiles', 'static/tiles.png');
   this.game.load.spritesheet('hero', 'static/hero.png', 34, 38, 14);
   this.game.load.image('background', 'static/map1.png');
+  this.game.load.image('bullet1', 'static/bullet1.png');
 };
 
 GameState.prototype.create = function () {
@@ -115,7 +225,7 @@ GameState.prototype.create = function () {
   this.layerHazard.resizeWorld();
 
   map.setCollisionBetween(1, 640, true, 'solid', true);
-  //map.setCollisionBetween(1, 640, true, 'hazard', true);
+  map.setCollisionBetween(1, 640, true, 'hazard', true);
 
   this.player = new Player(this, 40, 4);
   this.add.game.add.existing(this.player);

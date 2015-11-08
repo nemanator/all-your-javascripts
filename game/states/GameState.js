@@ -11,6 +11,7 @@ GameState.prototype.preload = function() {
   this.game.load.image('tiles', 'static/tiles.png');
   this.game.load.spritesheet('hero', 'static/hero.png', 34, 38, 14);
   this.game.load.image('background', 'static/map1.png');
+  this.game.load.image('bullet1', 'static/bullet1.png');
 };
 
 GameState.prototype.create = function () {
@@ -37,7 +38,7 @@ GameState.prototype.create = function () {
   this.layerHazard.resizeWorld();
 
   map.setCollisionBetween(1, 640, true, 'solid', true);
-  //map.setCollisionBetween(1, 640, true, 'hazard', true);
+  map.setCollisionBetween(1, 640, true, 'hazard', true);
 
   this.player = new Player(this, 40, 4);
   this.add.game.add.existing(this.player);

@@ -1,30 +1,46 @@
 function Player(game_state, x, y) {
-    Phaser.Sprite.call(this, game_state.game, x, y, 'hero');
-    this.game_state = game_state;
+  Phaser.Sprite.call(this, game_state.game, x, y, 'hero');
+  this.game_state = game_state;
 
-    this.facing = 'left';
-    this.life = 0;
-    this.isAlive = false;
-    this.name = 'Player';
-    this.currState = 'IDLE';
+  this.facing = 'left';
+  this.lifes = 3;
+  this.isAlive = false;
+  this.name = 'Player';
+  this.currState = 'IDLE';
+  this.respawnPoint = {
+    x: 40, y: 4
+  };
 
-    console.log('Add player');
+  console.log('Add player');
 
-    this.animations.add('idle', [1], 0);
-    this.animations.add('walk', [0, 1], 6, true);
-    this.animations.add('jump', [7], 0);
-    this.animations.play('idle');
+  this.animations.add('idle', [1], 0);
+  this.animations.add('walk', [0, 1], 6, true);
+  this.animations.add('jump', [7], 0);
+  this.animations.play('idle');
 
-    this.game_state.game.physics.arcade.enable(this);
-    this.body.collideWorldBounds = true;
-    this.anchor.setTo(0.5, 0.5);
+  this.game_state.game.physics.arcade.enable(this);
+  this.body.collideWorldBounds = true;
+  this.anchor.setTo(0.5, 0.5);
 
-    this.cursors = this.game_state.game.input.keyboard.createCursorKeys();
-    this.jumpButton = this.game_state.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+  this.cursors = this.game_state.game.input.keyboard.createCursorKeys();
+  this.jumpButton = this.game_state.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
+  var key = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
+  key.onDown.add(function(key)
+  {
+    var bullet = new SingleBullet(this.game_state.game);
+    console.log(bullet);
+
+    //bullet.fire(this);
+  }, this);
 }
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
 Player.prototype.constructor = Player;
+
+Player.prototype.spawn = function() {
+  this.reset(this.respawnPoint.x, this.respawnPoint.y);
+};
 
 Player.prototype.changeState = function(newState) {
   if (newState === this.currState) {
@@ -48,7 +64,13 @@ Player.prototype.changeState = function(newState) {
 };
 
 Player.prototype.update = function() {
-  this.game_state.game.physics.arcade.collide(this, this.game_state.layerSolid);
+  if (this.game_state.layerSolid) {
+    this.game_state.game.physics.arcade.collide(this, this.game_state.layerSolid);
+    this.game_state.game.physics.arcade.collide(this, this.game_state.layerHazard, function(player) {
+      player.kill();
+      player.spawn();
+    });
+  }
 
   if (this.cursors.left.isDown) {
       this.scale.x = 1;
