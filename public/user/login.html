@@ -32,6 +32,28 @@
             align-items: center;
             justify-content: center;
         }
+
+        .clr {
+            color: forestgreen;
+        }
+
+        table {
+            width: 100%;
+            text-align: center;
+            border: 1px dotted gray;
+            padding: 10px;
+        }
+
+        table thead td   {
+            border-bottom: 1px dotted gray;
+        }
+
+        table tbody td {
+            padding: 10px;
+        }
+        table tbody tr td:first-child {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -44,11 +66,25 @@
         <a id="gitlogin" href="/auth/github"><img src="//i.imgur.com/8XC3S4x.png" alt=""/>Login with GitHub</a>
 
         <hr/>
-        <div>
-            <h2>Controls</h2>
-            <h3>Space: <span class="clr">JUMP</span> </h3>
-            <h3>X: <span class="clr">SHOOT</span></h3>
-        </div>
+        <h2>Controls</h2>
+        <table>
+            <thead>
+            <tr>
+                <td>Key</td>
+                <td>Action</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Space</td>
+                <td>Jump</td>
+            </tr>
+            <tr>
+                <td>X</td>
+                <td>Shoot</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
 </section>
 
