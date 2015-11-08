@@ -9,8 +9,8 @@ let express = require('express'),
 
 let app = express();
 
-let GITHUB_CLIENT_ID = "f8c45a603e6ff3456095";
-let GITHUB_CLIENT_SECRET = "c30587a610395cc8df026d3cfe9cf317ce73d6c0";
+let GITHUB_CLIENT_ID = process.env.GHID;
+let GITHUB_CLIENT_SECRET = process.env.GHSECRET;
 
 passport.serializeUser(function (user, done) {
     done(null, user);
