@@ -144,6 +144,9 @@ Enemy.prototype.changeState = function(newState) {
     case 'TREAT':
       this.animations.play('treat');
       break;
+    case 'WALK':
+      this.animations.play('walk');
+      break;
   }
 };
 
@@ -155,17 +158,19 @@ Enemy.prototype.update = function() {
       enemy.kill();
     });
   }
+  this.changeState('IDLE');
 
   if (this.checkDistance() <= 100) {
+    this.changeState('WALK');
     //console.log('player here');
     if (this.x < this.game_state.player.x) {
       this.scale.x = -1;
       this.facing = 'right';
-      this.body.velocity.x = 200;
+      this.body.velocity.x = 100;
     } else {
       this.scale.x = 1;
       this.facing = 'left';
-      this.body.velocity.x = -200;
+      this.body.velocity.x = -100;
     }
 
   }
@@ -255,12 +260,14 @@ Player.prototype.update = function() {
   this.game_state.game.physics.arcade.collide(this.bullet, this.game_state.enemies, function(b, enemy) {
     b.kill();
     this.fx.play('squit');
-    enemy.kill();
+    //enemy.kill();
   }, null, this);
 
+  var touchEnemy = false;
   this.game_state.game.physics.arcade.collide(this, this.game_state.enemies, function(player, enemy) {
     //player.kill();
     this.fx.play('squit');
+    touchEnemy = true;
     //player.fx.play('death');
     //player.spawn();
   }, null, this);
@@ -288,7 +295,7 @@ Player.prototype.update = function() {
     }
   }
 
-  if (this.jumpButton.isDown && this.body.onFloor()) {
+  if (this.jumpButton.isDown && (this.body.onFloor() || touchEnemy)) {
       this.body.velocity.y = -500;
       this.changeState('JUMPING');
   }

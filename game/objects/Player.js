@@ -83,12 +83,14 @@ Player.prototype.update = function() {
   this.game_state.game.physics.arcade.collide(this.bullet, this.game_state.enemies, function(b, enemy) {
     b.kill();
     this.fx.play('squit');
-    enemy.kill();
+    //enemy.kill();
   }, null, this);
 
+  var touchEnemy = false;
   this.game_state.game.physics.arcade.collide(this, this.game_state.enemies, function(player, enemy) {
     //player.kill();
     this.fx.play('squit');
+    touchEnemy = true;
     //player.fx.play('death');
     //player.spawn();
   }, null, this);
@@ -116,7 +118,7 @@ Player.prototype.update = function() {
     }
   }
 
-  if (this.jumpButton.isDown && this.body.onFloor()) {
+  if (this.jumpButton.isDown && (this.body.onFloor() || touchEnemy)) {
       this.body.velocity.y = -500;
       this.changeState('JUMPING');
   }

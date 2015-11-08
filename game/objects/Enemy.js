@@ -52,6 +52,9 @@ Enemy.prototype.changeState = function(newState) {
     case 'TREAT':
       this.animations.play('treat');
       break;
+    case 'WALK':
+      this.animations.play('walk');
+      break;
   }
 };
 
@@ -63,17 +66,19 @@ Enemy.prototype.update = function() {
       enemy.kill();
     });
   }
+  this.changeState('IDLE');
 
   if (this.checkDistance() <= 100) {
+    this.changeState('WALK');
     //console.log('player here');
     if (this.x < this.game_state.player.x) {
       this.scale.x = -1;
       this.facing = 'right';
-      this.body.velocity.x = 200;
+      this.body.velocity.x = 100;
     } else {
       this.scale.x = 1;
       this.facing = 'left';
-      this.body.velocity.x = -200;
+      this.body.velocity.x = -100;
     }
 
   }
