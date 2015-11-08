@@ -261,6 +261,7 @@ GameState.prototype.preload = function() {
   };
 
   this.game.load.audiosprite('sfx', 'static/fx_mixdown.ogg', null, audioJSON);
+  this.game.load.audio('music', 'static/theme_1.ogg');
 };
 
 GameState.prototype.create = function () {
@@ -292,6 +293,10 @@ GameState.prototype.create = function () {
   this.player = new Player(this, 40, 4);
   this.add.game.add.existing(this.player);
   this.game.camera.follow(this.player);
+
+  var music = this.game.add.audio('music');
+  music.play();
+
 };
 
 GameState.prototype.update = function() {
