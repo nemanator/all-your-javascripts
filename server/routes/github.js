@@ -8,15 +8,18 @@ router.get('/github/user/:user', function (req, res) {
 
     gh.getAllInfo()
         .then(function (out) {
-        res.json(out);
-    }).catch(function(e) {
-        res.status(422).json(e);
-    });
+            res.json(out);
+        }).catch(function (e) {
+            res.status(422).json(e);
+        });
 });
 
-router.get('/test', function (req, res) {
-    res.json('test');
-
+router.get('/userdata', function (req, res) {
+    if (req.user) {
+        res.json({username: req.user.username});
+    } else {
+        res.status(422).send({});
+    }
 });
 
 module.exports = () => {
