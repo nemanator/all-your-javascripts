@@ -25,13 +25,19 @@ function Player(game_state, x, y) {
   this.cursors = this.game_state.game.input.keyboard.createCursorKeys();
   this.jumpButton = this.game_state.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
+  this.fx = this.game.add.audioSprite('sfx');
+  this.fx.allowMultiple = true;
+
+
   var key = this.game.input.keyboard.addKey(Phaser.Keyboard.X);
   key.onDown.add(function(key)
   {
     var bullet = new SingleBullet(this.game_state.game);
-    console.log(bullet);
+    bullet.setAll('body.allowGravity', false);
 
-    //bullet.fire(this);
+    this.fx.play('shot');
+
+    bullet.fire(this);
   }, this);
 }
 
@@ -58,6 +64,7 @@ Player.prototype.changeState = function(newState) {
       this.animations.play('walk');
       break;
     case 'JUMPING':
+      this.fx.play('squit');
       this.animations.play('jump');
       break;
   }
@@ -67,6 +74,7 @@ Player.prototype.update = function() {
   if (this.game_state.layerSolid) {
     this.game_state.game.physics.arcade.collide(this, this.game_state.layerSolid);
     this.game_state.game.physics.arcade.collide(this, this.game_state.layerHazard, function(player) {
+      player.fx.play('death');
       player.kill();
       player.spawn();
     });

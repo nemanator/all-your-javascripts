@@ -78,7 +78,7 @@ SingleBullet.prototype.fire = function (source) {
     if (this.game.time.time < this.nextFire) { return; }
 
     var x = source.x + 10;
-    var y = source.y + 10;
+    var y = source.y; //+ 10;
 
     this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
 
