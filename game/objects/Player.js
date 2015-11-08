@@ -86,6 +86,13 @@ Player.prototype.update = function() {
     enemy.kill();
   }, null, this);
 
+  this.game_state.game.physics.arcade.collide(this, this.game_state.enemies, function(player, enemy) {
+    //player.kill();
+    this.fx.play('squit');
+    //player.fx.play('death');
+    //player.spawn();
+  }, null, this);
+
   if (this.cursors.left.isDown) {
       this.facing = 'left';
       this.scale.x = 1;

@@ -5,6 +5,7 @@ function Enemy(game_state, x, y, image) {
   this.facing = 'left';
   this.name = 'Enemy';
   this.currState = 'ALERT';
+  this.facing = 'left'; //right
 
   console.log('Add enemy');
 
@@ -26,6 +27,14 @@ Enemy.prototype.constructor = Enemy;
 
 Enemy.prototype.spawn = function() {
   this.reset(this.respawnPoint.x, this.respawnPoint.y);
+};
+
+Enemy.prototype.checkDistance = function() {
+  var player = this.game_state.player;
+  var dx = player.x - this.x;
+  var dy = player.y - this.y;
+
+  return Math.sqrt(dx * dx + dy * dy);
 };
 
 Enemy.prototype.changeState = function(newState) {
@@ -53,5 +62,19 @@ Enemy.prototype.update = function() {
       enemy.fx.play('death');
       enemy.kill();
     });
+  }
+
+  if (this.checkDistance() <= 100) {
+    //console.log('player here');
+    if (this.x < this.game_state.player.x) {
+      this.scale.x = -1;
+      this.facing = 'right';
+      this.body.velocity.x = 200;
+    } else {
+      this.scale.x = 1;
+      this.facing = 'left';
+      this.body.velocity.x = -200;
+    }
+
   }
 };
