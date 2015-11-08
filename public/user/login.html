@@ -2,9 +2,47 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title></title>
+    <title>Captain CodeALot</title>
+    <style>
+        body {
+            height: 100vh;
+            min-height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            height: 431px;
+            background-size: cover;
+            background: url('//i.imgur.com/4PNl6nK.png') 50%;
+        }
+
+        #main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #content {
+            padding-top: 2%;
+        }
+
+        #gitlogin {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 <body>
-<a href="/auth/github">Login with GitHub</a>
+<header></header>
+<section id="main">
+    <div id="content">
+        <h1>Captain CodeALot</h1>
+        <h4>Log in to play!</h4>
+
+        <a id="gitlogin" href="/auth/github"><img src="//i.imgur.com/8XC3S4x.png" alt=""/>Login with GitHub</a>
+    </div>
+</section>
+
 </body>
 </html>
