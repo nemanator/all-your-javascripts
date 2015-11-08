@@ -73,14 +73,19 @@ SingleBullet = function (game) {
 SingleBullet.prototype = Object.create(Phaser.Group.prototype);
 SingleBullet.prototype.constructor = SingleBullet;
 
-SingleBullet.prototype.fire = function (source) {
+SingleBullet.prototype.fire = function (source, facing) {
 
     if (this.game.time.time < this.nextFire) { return; }
 
     var x = source.x + 10;
     var y = source.y; //+ 10;
 
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
+    if (facing === 'right') {
+      this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
+    } else if (facing === 'left') {
+      this.getFirstExists(false).fire(x, y, 180, this.bulletSpeed, 0, 0);
+    }
+
 
     this.nextFire = this.game.time.time + this.fireRate;
 

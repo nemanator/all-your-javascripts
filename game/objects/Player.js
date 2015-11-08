@@ -11,7 +11,9 @@ function Player(game_state, x, y) {
     x: 40, y: 4
   };
 
+  this.facing = 'right'; // left
   console.log('Add player');
+
 
   this.animations.add('idle', [1], 0);
   this.animations.add('walk', [0, 1], 6, true);
@@ -35,7 +37,7 @@ function Player(game_state, x, y) {
   key.onDown.add(function(key)
   {
     this.fx.play('shot');
-    this.bullet.fire(this);
+    this.bullet.fire(this, this.facing);
   }, this);
 }
 
@@ -85,11 +87,13 @@ Player.prototype.update = function() {
   }, null, this);
 
   if (this.cursors.left.isDown) {
+      this.facing = 'left';
       this.scale.x = 1;
       this.body.velocity.x = -200;
   }
 
   if (this.cursors.right.isDown) {
+      this.facing = 'right';
       this.scale.x = -1;
       this.body.velocity.x = 200;
   }

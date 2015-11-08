@@ -73,14 +73,19 @@ SingleBullet = function (game) {
 SingleBullet.prototype = Object.create(Phaser.Group.prototype);
 SingleBullet.prototype.constructor = SingleBullet;
 
-SingleBullet.prototype.fire = function (source) {
+SingleBullet.prototype.fire = function (source, facing) {
 
     if (this.game.time.time < this.nextFire) { return; }
 
     var x = source.x + 10;
     var y = source.y; //+ 10;
 
-    this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
+    if (facing === 'right') {
+      this.getFirstExists(false).fire(x, y, 0, this.bulletSpeed, 0, 0);
+    } else if (facing === 'left') {
+      this.getFirstExists(false).fire(x, y, 180, this.bulletSpeed, 0, 0);
+    }
+
 
     this.nextFire = this.game.time.time + this.fireRate;
 
@@ -155,7 +160,9 @@ function Player(game_state, x, y) {
     x: 40, y: 4
   };
 
+  this.facing = 'right'; // left
   console.log('Add player');
+
 
   this.animations.add('idle', [1], 0);
   this.animations.add('walk', [0, 1], 6, true);
@@ -179,7 +186,7 @@ function Player(game_state, x, y) {
   key.onDown.add(function(key)
   {
     this.fx.play('shot');
-    this.bullet.fire(this);
+    this.bullet.fire(this, this.facing);
   }, this);
 }
 
@@ -229,11 +236,13 @@ Player.prototype.update = function() {
   }, null, this);
 
   if (this.cursors.left.isDown) {
+      this.facing = 'left';
       this.scale.x = 1;
       this.body.velocity.x = -200;
   }
 
   if (this.cursors.right.isDown) {
+      this.facing = 'right';
       this.scale.x = -1;
       this.body.velocity.x = 200;
   }
@@ -265,7 +274,7 @@ GameState.prototype.preload = function() {
   'use strict';
   this.game.load.tilemap('map', 'static/map1.json', null, Phaser.Tilemap.TILED_JSON);
   this.game.load.image('tiles', 'static/tiles.png');
-  this.game.load.spritesheet('hero', 'static/hero.png', 34, 38, 14);
+  this.game.load.spritesheet('hero', 'static/hero.png', 34, 38);
   this.game.load.spritesheet('enemy1', 'static/enemy1.png', 33, 42, 4);
   this.game.load.image('background', 'static/map1.png');
   this.game.load.image('bullet1', 'static/bullet1.png');
@@ -352,20 +361,37 @@ GameState.prototype.create = function () {
   map.setCollisionBetween(1, 640, true, 'solid', true);
   map.setCollisionBetween(1, 640, true, 'hazard', true);
 
+  var that = this;
+
+  this.enemies = this.game.add.group();
+  map.objects.enemies.forEach(function(enemy) {
+    var e = new Enemy(that, enemy.x, enemy.y, 'enemy1');
+    that.game.add.existing(e);
+    that.enemies.add(e);
+  });
+
+
+  console.log(this.enemies);
+
+  this.enemies.forEach(function(enemy) {
+    console.log(enemy);
+  }, this);
+
   this.player = new Player(this, 40, 4);
   this.add.game.add.existing(this.player);
   this.game.camera.follow(this.player);
 
-  this.enemies = this.game.add.group();
 
-  var enemy = new Enemy(this, 100, 4, 'enemy1');
-  this.game.add.existing(enemy);
 
-  this.enemies.add(enemy);
 
   var music = this.game.add.audio('music');
   music.loop = true;
   music.play();
+
+};
+
+GameState.prototype.setupEnemies = function(enemy) {
+  console.log(enemy);
 
 };
 
