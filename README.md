@@ -9,3 +9,5 @@
 #### We thought so :)
 
 Enjoy our NKO-2015 entry!
+
+#### Update: The game has not been finished within the contest time-frame and so it did not compete.
